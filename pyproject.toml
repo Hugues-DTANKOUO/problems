@@ -1,0 +1,41 @@
+[tool.poetry]
+name = "Problems"
+version = "0.1.0"
+description = "Set of problems and solutions"
+authors = ["Hugues DTANKOUO <huguesdtankouo@gmail.com>"]
+readme = "README.md"
+packages = [{ include = "problems", from = "src"}]
+
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[tool.poetry.dev-dependencies]
+pytest = "^8.1.1"
+mypy = "^1.9.0"
+ruff = "^0.3.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 120
+exclude = [
+    ".venv",
+    "build",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.mypy]
+explicit_package_bases = true
+namespace_packages = true
+
+[tool.poetry.scripts]
+lint = "problems.scripts:run_lint"
+tests = "problems.scripts:run_tests"
+check = "problems.scripts:run_all_checks"
