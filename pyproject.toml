@@ -11,11 +11,11 @@ packages = [{ include = "problems", from = "src"}]
 python = "^3.10"
 
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "^8.1.1"
 mypy = "^1.9.0"
 ruff = "^0.3.2"
-
+pytest-cov = "^6.0.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -34,6 +34,28 @@ quote-style = "double"
 [tool.mypy]
 explicit_package_bases = true
 namespace_packages = true
+
+[tool.pytest.ini_options]
+addopts = "--cov=problems --cov-report=term-missing --cov-config=.coveragerc --cov-context=test"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["problems"]
+branch = true
+parallel = true
+relative_files = true
+omit = ["src/problems/scripts.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "pass",
+    "raise ImportError",
+]
 
 [tool.poetry.scripts]
 lint = "problems.scripts:run_lint"
