@@ -20,4 +20,4 @@ def is_anagram(word_1: str, word_2: str) -> bool:
     # Write your code here
     # Note: Do not use the sorted() function or implement your own sorting algorithm
 
-    return ...  # type: ignore[return-value] # Replace this line with your code
+    return all(map(lambda x: x in word_2 and word_1.count(x) == word_2.count(x), set(word_1)))
