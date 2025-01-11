@@ -23,7 +23,7 @@ def _non_functional_check(func: Callable[[str, str], bool]) -> Callable[[str, st
             start_time = time()
             result = func(word_1, word_2)
             duration = time() - start_time
-            assert duration < 0.01, f"The function is too slow ({duration:.4f} seconds)"
+            assert duration < 0.01, f"The function is too slow ({duration*1e3:.5f} milliseconds)"
             count_sorted = mock_sorted.call_count
             assert count_sorted == 0, f"sorted() was called {count_sorted} times, please do not use it"
             return result
