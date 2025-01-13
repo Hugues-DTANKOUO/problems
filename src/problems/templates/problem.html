@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/material-darker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/foldcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/foldgutter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/brace-fold.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/comment-fold.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/show-hint.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/python-hint.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/python-lint.min.js"></script> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/show-hint.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/foldgutter.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+    <title>Solve Problems</title>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Column -->
+        <div class="left-column">
+            <h1>Solve {{ title | capitalize }} problem!</h1>
+            <div id="rendered-markdown"></div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="right-column">
+            <div id="code-editor"></div>
+
+            <!-- Test Button -->
+            <button id="test-button" class="test-button">
+                Test
+            </button>
+
+            <!-- Output Console -->
+            <div id="console-output" class="console-output">
+                <p>Console output:</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        // CodeMirror initialisation
+        const editor = CodeMirror(document.getElementById('code-editor'), {
+          value: `{{ code | safe }}`,           // Code to display
+          mode: "python",                // Python syntax highlighting
+          theme: "material-darker",      // Dark theme
+          lineNumbers: true,             // Active line numbers
+          foldGutter: true,              // Active icons to fold blocks
+          gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"], // Add line numbers and fold icons
+          matchBrackets: true,           // Highlight matching brackets
+          autoCloseBrackets: true,       // Automatically close brackets
+          indentUnit: 4,                 // Indentation unit
+          tabSize: 4,                    // Tab size
+          indentWithTabs: true,          // Use tabs for indentation
+          lineWrapping: true,             // Active line wrapping
+            extraKeys: {
+                "Ctrl-Space": "autocomplete" // Active auto-completion
+            },
+            lint: true, // Active linting
+        });
+        const descriptionProblem = `{{ description | safe }}`;
+
+        // Markdown-it initialisation
+        const md = window.markdownit();
+
+        // Convert the markdown to HTML
+        const htmlDescriptionProblem = md.render(descriptionProblem);
+
+        // Insert the HTML into the rendered-markdown element
+        document.getElementById("rendered-markdown").innerHTML = htmlDescriptionProblem;
+
+        function appendToConsole(message){
+            const consoleOutput = document.getElementById("console-output");
+            const newLine = document.createElement("div");
+            newLine.textContent = message;
+            newLine.style.color = message.includes("Passed") ? "green" : "red";
+            consoleOutput.appendChild(newLine);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight; // Scroll to the bottom
+        }
+
+        // Event listener for the run button
+        document.getElementById("test-button").addEventListener("click", async () => {
+            const code = editor.getValue(); // Get the code from the editor
+
+            try {
+                // POST request to the server
+                const response = await fetch(`/solve/{{ title }}/`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ code: code })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to communicate with the server");
+                    console.log("Failed to communicate with the server", response.text(), "code", { code });
+                }
+
+                // Get the JSON response
+                const data = await response.json();
+
+                // Clear the console output
+                document.getElementById("console-output").innerHTML = "<p>Console output:</p>";
+
+                // If "tests" is not in the response, display the error message
+                if (data.tests) {
+                    for (const message of data.tests) {
+                        appendToConsole(message);
+                    }
+                }
+                else {
+                    appendToConsole(data.error);
+                }
+            } catch (error) {
+                // Display the error message in the console
+                appendToConsole(`Error: ${error.message}`, false);
+            }
+        });
+    </script>
+    <style>
+        /* Main container */
+        .container {
+            display: flex;
+            flex-direction: row;
+            gap: 20px; /* Space between the columns */
+            margin: 20px;
+        }
+
+        .left-column {
+            flex: 1; /* Left column takes less space */
+        }
+
+        .right-column {
+            flex: 2; /* Right column takes more space */
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Space between the elements */
+        }
+
+        #code-editor {
+          height: 500px; /* Height of the code editor */
+          border: 1px solid #444; /* Border around the code editor */
+          margin: 20px 0;
+        }
+
+        /* Test button */
+        .test-button {
+            background-color: green;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Console output */
+        .console-output {
+            background-color: black;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            font-family: monospace;
+            height: 200px;
+            overflow-y: auto;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow: auto;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        blockquote {
+            border-left: 5px solid #ccc;
+            margin: 1em 0;
+            padding: 0.5em 10px;
+            color: #666;
+            font-style: italic;
+        }
+      
+        .CodeMirror {
+          font-size: 16px; /* Font size */
+          height: 100%;    /* Height of the editor */
+        }
+      </style>
+</body>
+</html>

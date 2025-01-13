@@ -9,6 +9,7 @@ packages = [{ include = "problems", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+fastapi = {extras = ["standard"], version = "^0.115.6"}
 
 
 [tool.poetry.group.dev.dependencies]
@@ -22,11 +23,17 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
+lint.select = ["A", "B", "E", "F", "I", "N", "W", "INP"]
 line-length = 120
 exclude = [
     ".venv",
     "build",
 ]
+
+[tool.ruff.lint.isort]
+lines-between-types = 1
+lines-after-imports = 2
+combine-as-imports = true
 
 [tool.ruff.format]
 quote-style = "double"
@@ -44,7 +51,10 @@ source = ["problems"]
 branch = true
 parallel = true
 relative_files = true
-omit = ["src/problems/scripts.py"]
+omit = [
+    "src/problems/scripts.py",
+    "src/problems/interface.py",
+]
 
 [tool.coverage.report]
 exclude_lines = [
@@ -61,3 +71,4 @@ exclude_lines = [
 lint = "problems.scripts:run_lint"
 tests = "problems.scripts:run_tests"
 check = "problems.scripts:run_all_checks"
+server = "problems.scripts:run_server"
