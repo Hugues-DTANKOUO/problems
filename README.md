@@ -78,6 +78,8 @@ poetry run server
 ### 5. Access the Platform
 Open your browser and navigate to: http://127.0.0.1:8000
 
+![screenshot](./problems-screenshot.png)
+
 ---
 
 ## 🧑‍💻 **About the Author**
