@@ -146,6 +146,14 @@ This project is licensed under the **MIT License**. For more details, see the [L
 
 ---
 
+## 📜 CHANGELOG
+
+All updates and changes to this project are documented in the [CHANGELOG](CHANGELOG.md) file.  
+
+Visit the changelog to see the history of features, improvements, and bug fixes across all releases.
+
+---
+
 ## 🎉 **Enjoy Solving Problems**
 
 Thank you for exploring this repository. We hope it helps you sharpen your programming skills and provides a fun, engaging way to tackle coding challenges.

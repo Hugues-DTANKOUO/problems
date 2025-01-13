@@ -8,8 +8,8 @@ from typing import Annotated, Any, Callable
 from fastapi import Body, FastAPI
 from fastapi.requests import Request
 from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 
 CURRENT_DIR = Path(__file__).parent
@@ -56,11 +56,13 @@ async def home(request: Request) -> Any:
     readme_path = CURRENT_DIR.parents[1] / "README.md"
     with open(readme_path) as file:
         readme = file.read().replace("`", r"\`").replace("/src/problems", "")
+        readme = readme.replace("CHANGELOG.md)", "CHANGELOG)")
         readme = re.sub(r"\(/(\w+)\.py\)", r"(/solve/\1)", readme)
     return templates.TemplateResponse("index.html", {"request": request, "content": readme})
 
+
 @app.get("/LICENSE", response_class=HTMLResponse)
-async def license(request: Request) -> Any:
+async def get_license(request: Request) -> Any:
     """
     Get the license page
 
@@ -69,9 +71,24 @@ async def license(request: Request) -> Any:
     """
     license_path = CURRENT_DIR.parents[1] / "LICENSE"
     with open(license_path) as file:
-        license = file.read().replace("`", r"\`")
-        license += "\n\n## [Back to home](/)"
-    return templates.TemplateResponse("index.html", {"request": request, "content": license})
+        license_content = file.read().replace("`", r"\`")
+        license_content += "\n\n## [Go to home](/)"
+    return templates.TemplateResponse("index.html", {"request": request, "content": license_content})
+
+
+@app.get("/CHANGELOG", response_class=HTMLResponse)
+async def changelog(request: Request) -> Any:
+    """
+    Get the changelog page
+
+    :param request: The request object
+    :return: The changelog page
+    """
+    changelog_path = CURRENT_DIR.parents[1] / "CHANGELOG.md"
+    with open(changelog_path) as file:
+        changelog = file.read().replace("`", r"\`")
+        changelog += "\n\n## [Go to home](/)"
+    return templates.TemplateResponse("index.html", {"request": request, "content": changelog})
 
 
 @app.get("/solve/{problem_name}", response_class=HTMLResponse)
@@ -101,7 +118,7 @@ async def get_problem(request: Request, problem_name: str) -> Any:
     documentation = documentation.replace("`", r"\`")
 
     # Add a link for back to the home page
-    documentation += "\n\n## [Back to home](/)"
+    documentation += "\n\n## [Go to home](/)"
 
     # Render the problem page with the code editor and the documentation
     data = {"request": request, "code": code, "title": problem_name, "description": documentation}
