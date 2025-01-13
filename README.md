@@ -97,7 +97,7 @@ Hugues is a dedicated professional who emphasizes high-quality standards, operat
 
 📧 **Contact:** [huguesdtankouo@gmail.com](mailto:huguesdtankouo@gmail.com)  
 🔗 **LinkedIn:** [Hugues Dtankouo](https://www.linkedin.com/in/dtankouo)  
-🔗 **GitHub:** [Hugues-DTANKOUO](https://github.com/Hugues-DTANKOUO)
+🔗 **GitHub:** [Hugues-DTANKOUO](https://github.com/Hugues-DTANKOUO)  
 🔗 **Facebook:** [Hugues Dtankouo](https://www.facebook.com/ing.hugues.dtankouo) (Over 20,000 followers)
 
 ---
