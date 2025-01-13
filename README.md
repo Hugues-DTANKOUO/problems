@@ -76,9 +76,19 @@ poetry run server
 ```
 
 ### 5. Access the Platform
-Open your browser and navigate to: http://127.0.0.1:8000
+Open your browser and navigate to: [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
-![screenshot](./problems-screenshot.png)
+---
+
+## 📂 Available Problems
+
+Here are the problems currently available in this repository:
+
+1. **Anagram**
+   - [View Problem](/src/problems/anagram.py)
+
+2. **Knapsack**
+   - [View Problem](/src/problems/knapsack.py)
 
 ---
 
@@ -141,3 +151,5 @@ This project is licensed under the **MIT License**. For more details, see the [L
 Thank you for exploring this repository. We hope it helps you sharpen your programming skills and provides a fun, engaging way to tackle coding challenges.
 
 Happy coding! 🚀
+
+![screenshot](/src/problems/static/images/problems-screenshot.png)

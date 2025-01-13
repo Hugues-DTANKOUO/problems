@@ -1,5 +1,6 @@
 import importlib
 import importlib.util
+import re
 
 from pathlib import Path
 from typing import Annotated, Any, Callable
@@ -8,11 +9,15 @@ from fastapi import Body, FastAPI
 from fastapi.requests import Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 
 
 CURRENT_DIR = Path(__file__).parent
 
 app = FastAPI()
+
+
+app.mount("/static", StaticFiles(directory=CURRENT_DIR / "static"), name="static")
 
 
 templates = Jinja2Templates(directory=CURRENT_DIR / "templates")
@@ -40,6 +45,35 @@ with open(CURRENT_DIR / "anagram.py") as file:
     code = file.read()
 
 
+@app.get("/", response_class=HTMLResponse)
+async def home(request: Request) -> Any:
+    """
+    Get the home page
+
+    :param request: The request object
+    :return: The home page
+    """
+    readme_path = CURRENT_DIR.parents[1] / "README.md"
+    with open(readme_path) as file:
+        readme = file.read().replace("`", r"\`").replace("/src/problems", "")
+        readme = re.sub(r"\(/(\w+)\.py\)", r"(/solve/\1)", readme)
+    return templates.TemplateResponse("index.html", {"request": request, "content": readme})
+
+@app.get("/LICENSE", response_class=HTMLResponse)
+async def license(request: Request) -> Any:
+    """
+    Get the license page
+
+    :param request: The request object
+    :return: The license page
+    """
+    license_path = CURRENT_DIR.parents[1] / "LICENSE"
+    with open(license_path) as file:
+        license = file.read().replace("`", r"\`")
+        license += "\n\n## [Back to home](/)"
+    return templates.TemplateResponse("index.html", {"request": request, "content": license})
+
+
 @app.get("/solve/{problem_name}", response_class=HTMLResponse)
 async def get_problem(request: Request, problem_name: str) -> Any:
     """
@@ -65,6 +99,9 @@ async def get_problem(request: Request, problem_name: str) -> Any:
 
     # Escape the backticks in the documentation
     documentation = documentation.replace("`", r"\`")
+
+    # Add a link for back to the home page
+    documentation += "\n\n## [Back to home](/)"
 
     # Render the problem page with the code editor and the documentation
     data = {"request": request, "code": code, "title": problem_name, "description": documentation}
