@@ -2,44 +2,444 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
-    <title>Solve Problems</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Problems - Improve Your Coding Skills</title>
+    
+    <!-- Markdown-it -->
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.1/dist/markdown-it.min.js"></script>
+    
+    <!-- Highlight.js pour la coloration syntaxique -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
 </head>
 <body>
-    <div id="rendered-markdown"></div>
+    <div class="main-container">
+        <!-- Header avec Navigation -->
+        <header>
+            <nav>
+                <a href="/" class="logo">
+                    <span class="logo-icon">🎯</span>
+                    <span class="logo-text">Code Problems</span>
+                </a>
+                <div class="nav-links">
+                    <a href="/" id="nav-home">Home</a>
+                    <a href="/problems" id="nav-problems">Problems</a>
+                    <a href="/CHANGELOG" id="nav-changelog">Changelog</a>
+                    <a href="/LICENSE" id="nav-license">License</a>
+                    <a href="https://github.com/Hugues-DTANKOUO/problems" target="_blank" class="github-link">
+                        <svg viewBox="0 0 24 24" class="github-icon">
+                            <path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Contenu Principal -->
+        <main>
+            <div id="rendered-markdown"></div>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About Code Problems</h3>
+                    <p>A platform for improving your coding skills through practical exercises.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="/problems">Problems</a>
+                    <a href="/CHANGELOG">Changelog</a>
+                    <a href="/LICENSE">License</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <a href="https://github.com/Hugues-DTANKOUO/problems" target="_blank">GitHub</a>
+                    <a href="mailto:huguesdtankouo@gmail.com">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Code Problems. Created by <a href="https://www.linkedin.com/in/dtankouo" target="_blank">Hugues DTANKOUO</a></p>
+            </div>
+        </footer>
+    </div>
+
     <script>
+        // Fonction pour gérer le lien actif dans la navigation
+        function setActiveNavLink() {
+            // Récupère le chemin actuel
+            const currentPath = window.location.pathname;
+            
+            // Retire la classe active de tous les liens
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Ajoute la classe active au lien correspondant à la page courante
+            if (currentPath === '/') {
+                document.getElementById('nav-home').classList.add('active');
+            } else if (currentPath.startsWith('/problems')) {
+                document.getElementById('nav-problems').classList.add('active');
+            } else if (currentPath === '/CHANGELOG') {
+                document.getElementById('nav-changelog').classList.add('active');
+            } else if (currentPath === '/LICENSE') {
+                document.getElementById('nav-license').classList.add('active');
+            }
+        }
+
+        // Exécute la fonction au chargement de la page
+        document.addEventListener('DOMContentLoaded', setActiveNavLink);
+        
+        // Initialisation de markdown-it avec des options
+        const md = window.markdownit({
+            html: true,
+            linkify: true,
+            typographer: true,
+            highlight: function (str, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                    try {
+                        return hljs.highlight(str, { language: lang }).value;
+                    } catch (__) {}
+                }
+                return ''; // Utilisation du surlignage par défaut
+            }
+        });
+
+        // Rendu du markdown
         const content = `{{ content | safe }}`;
+        document.getElementById('rendered-markdown').innerHTML = md.render(content);
 
-        // Markdown-it initialisation
-        const md = window.markdownit();
-
-        // Convert the markdown to HTML
-        const htmlContent = md.render(content);
-
-        // Insert the HTML into the rendered-markdown element
-        document.getElementById("rendered-markdown").innerHTML = htmlContent;
+        // Initialisation de highlight.js
+        document.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightBlock(block);
+        });
     </script>
+
     <style>
-        pre {
-            background: #f4f4f4;
-            padding: 10px;
-            border-radius: 5px;
-            overflow: auto;
+        /* Variables et Reset */
+        :root {
+            --primary-color: #3b82f6;
+            --text-color: #e2e8f0;
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --border-color: #334155;
+            --hover-color: #60a5fa;
+            --footer-bg: #1e293b;
         }
 
-        code {
-            background: #f4f4f4;
-            padding: 2px 4px;
-            border-radius: 3px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        blockquote {
-            border-left: 5px solid #ccc;
-            margin: 1em 0;
-            padding: 0.5em 10px;
-            color: #666;
-            font-style: italic;
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
         }
-      </style>
+
+        /* Layout */
+        .main-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            font-weight: bold;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--hover-color);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .github-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .github-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            width: 100%;
+        }
+
+        /* Markdown Styles */
+        #rendered-markdown {
+            background-color: var(--surface-color);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #rendered-markdown h1,
+        #rendered-markdown h2,
+        #rendered-markdown h3 {
+            color: var(--primary-color);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        #rendered-markdown h1 {
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        #rendered-markdown h2 {
+            font-size: 2rem;
+        }
+
+        #rendered-markdown h3 {
+            font-size: 1.5rem;
+        }
+
+        #rendered-markdown p {
+            margin-bottom: 1rem;
+        }
+
+        #rendered-markdown a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        #rendered-markdown a:hover {
+            color: var(--hover-color);
+            text-decoration: underline;
+        }
+
+        #rendered-markdown code {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.3rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9em;
+        }
+
+        #rendered-markdown p code:not(pre code),
+        #rendered-markdown li code:not(pre code),
+        #rendered-markdown h1 code:not(pre code),
+        #rendered-markdown h2 code:not(pre code),
+        #rendered-markdown h3 code:not(pre code) {
+            background-color: rgba(0, 0, 0, 0.2);
+            color: #ff79c6;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9em;
+            border: 1px solid rgba(255, 121, 198, 0.3);
+        }
+
+        #rendered-markdown pre {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        #rendered-markdown pre code {
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        #rendered-markdown ul,
+        #rendered-markdown ol {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+
+        #rendered-markdown li {
+            margin-bottom: 0.5rem;
+        }
+
+        #rendered-markdown blockquote {
+            border-left: 4px solid var(--primary-color);
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: #94a3b8;
+        }
+
+        #rendered-markdown img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        #rendered-markdown hr {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 2rem 0;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--footer-bg);
+            padding: 3rem 2rem 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .footer-section h3 {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--hover-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-bottom a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .footer-bottom a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+                gap: 0.5rem;
+            }
+
+            .nav-links a {
+                width: 100%;
+                text-align: center;
+                padding: 0.75rem;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            #rendered-markdown {
+                padding: 1rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scrollbar personnalisée */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--surface-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+    </style>
 </body>
 </html>

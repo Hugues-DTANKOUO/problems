@@ -61,6 +61,21 @@ async def home(request: Request) -> Any:
     return templates.TemplateResponse("index.html", {"request": request, "content": readme})
 
 
+@app.get("/problems", response_class=HTMLResponse)
+async def problems(request: Request) -> Any:
+    """
+    Get the list of problems
+
+    :param request: The request object
+    :return: The list of problems
+    """
+    problems_path = CURRENT_DIR.parents[1] / "problems.md"
+    with open(problems_path) as file:
+        problems = file.read().replace("`", r"\`").replace("/src/problems", "")
+        problems = re.sub(r"\(/(\w+)\.py\)", r"(/solve/\1)", problems)
+    return templates.TemplateResponse("index.html", {"request": request, "content": problems})
+
+
 @app.get("/LICENSE", response_class=HTMLResponse)
 async def get_license(request: Request) -> Any:
     """
@@ -72,7 +87,6 @@ async def get_license(request: Request) -> Any:
     license_path = CURRENT_DIR.parents[1] / "LICENSE"
     with open(license_path) as file:
         license_content = file.read().replace("`", r"\`")
-        license_content += "\n\n## [Go to home](/)"
     return templates.TemplateResponse("index.html", {"request": request, "content": license_content})
 
 
@@ -87,7 +101,6 @@ async def changelog(request: Request) -> Any:
     changelog_path = CURRENT_DIR.parents[1] / "CHANGELOG.md"
     with open(changelog_path) as file:
         changelog = file.read().replace("`", r"\`")
-        changelog += "\n\n## [Go to home](/)"
     return templates.TemplateResponse("index.html", {"request": request, "content": changelog})
 
 
@@ -116,9 +129,6 @@ async def get_problem(request: Request, problem_name: str) -> Any:
 
     # Escape the backticks in the documentation
     documentation = documentation.replace("`", r"\`")
-
-    # Add a link for back to the home page
-    documentation += "\n\n## [Go to home](/)"
 
     # Render the problem page with the code editor and the documentation
     data = {"request": request, "code": code, "title": problem_name, "description": documentation}

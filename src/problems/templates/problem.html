@@ -2,200 +2,633 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - Code Problems</title>
+    
+    <!-- CodeMirror Core -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/material-darker.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/python/python.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/foldcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/foldgutter.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/brace-fold.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/comment-fold.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/show-hint.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/python-hint.min.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/python-lint.min.js"></script> -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.css">
+    
+    <!-- CodeMirror Addons CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/show-hint.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/foldgutter.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
-    <title>Solve Problems</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/dialog/dialog.min.css">
+    
+    <!-- Markdown-it pour le rendu de la documentation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/13.0.1/markdown-it.min.js"></script>
+
+    <!-- Highlight.js pour la coloration syntaxique -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    
+    <!-- CodeMirror Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/python/python.min.js"></script>
+    
+    <!-- CodeMirror Addons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/matchbrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closebrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/foldcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/foldgutter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/python-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/search/search.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/search/searchcursor.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/dialog/dialog.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <!-- Left Column -->
-        <div class="left-column">
-            <h1>Solve {{ title | capitalize }} problem!</h1>
-            <div id="rendered-markdown"></div>
-        </div>
+    <div class="main-container">
+        <!-- Header -->
+        <header>
+            <nav>
+                <a href="/" class="logo">
+                    <span class="logo-icon">🎯</span>
+                    <span class="logo-text">Code Problems</span>
+                </a>
+                <div class="nav-links">
+                    <a href="/" id="nav-home">Home</a>
+                    <a href="/problems" id="nav-problems">Problems/{{ title | capitalize }}</a>
+                    <a href="/CHANGELOG" id="nav-changelog">Changelog</a>
+                    <a href="/LICENSE" id="nav-license">License</a>
+                    <a href="https://github.com/Hugues-DTANKOUO/problems" target="_blank" class="github-link">
+                        <svg viewBox="0 0 24 24" class="github-icon">
+                            <path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
+            </nav>
+        </header>
 
-        <!-- Right Column -->
-        <div class="right-column">
-            <div id="code-editor"></div>
+        <!-- Main Content -->
+        <div class="content-container">
+            <!-- Left Panel: Problem Description -->
+            <div class="problem-panel">
+                <h1>{{ title | capitalize }}</h1>
+                <hr>
+                <div id="problem-description" class="markdown-enhanced"></div>
+            </div>
 
-            <!-- Test Button -->
-            <button id="test-button" class="test-button">
-                Test
-            </button>
+            <!-- Right Panel: Code Editor and Console -->
+            <div class="editor-panel">
+                <!-- Toolbar -->
+                <div class="toolbar">
+                    <button id="run-tests" class="primary-button">
+                        Run Tests
+                    </button>
+                </div>
 
-            <!-- Output Console -->
-            <div id="console-output" class="console-output">
-                <p>Console output:</p>
+                <!-- Code Editor -->
+                <div id="code-editor"></div>
+
+                <!-- Console Output -->
+                <div class="console-container">
+                    <div class="console-header">
+                        <span>Console</span>
+                        <button id="clear-console" class="secondary-button">Clear</button>
+                    </div>
+                    <div id="console-output"></div>
+                </div>
             </div>
         </div>
     </div>
+
     <script>
-        // CodeMirror initialisation
-        const editor = CodeMirror(document.getElementById('code-editor'), {
-          value: `{{ code | safe }}`,           // Code to display
-          mode: "python",                // Python syntax highlighting
-          theme: "material-darker",      // Dark theme
-          lineNumbers: true,             // Active line numbers
-          foldGutter: true,              // Active icons to fold blocks
-          gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"], // Add line numbers and fold icons
-          matchBrackets: true,           // Highlight matching brackets
-          autoCloseBrackets: true,       // Automatically close brackets
-          indentUnit: 4,                 // Indentation unit
-          tabSize: 4,                    // Tab size
-          indentWithTabs: true,          // Use tabs for indentation
-          lineWrapping: true,             // Active line wrapping
-            extraKeys: {
-                "Ctrl-Space": "autocomplete" // Active auto-completion
-            },
-            lint: true, // Active linting
-        });
-        const descriptionProblem = `{{ description | safe }}`;
+        // Fonction pour gérer le lien actif dans la navigation
+        function setActiveNavLink() {
+            // Récupère le chemin actuel
+            const currentPath = window.location.pathname;
+            
+            // Retire la classe active de tous les liens
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
 
-        // Markdown-it initialisation
-        const md = window.markdownit();
-
-        // Convert the markdown to HTML
-        const htmlDescriptionProblem = md.render(descriptionProblem);
-
-        // Insert the HTML into the rendered-markdown element
-        document.getElementById("rendered-markdown").innerHTML = htmlDescriptionProblem;
-
-        function appendToConsole(message){
-            const consoleOutput = document.getElementById("console-output");
-            const newLine = document.createElement("div");
-            newLine.textContent = message;
-            newLine.style.color = message.includes("Passed") ? "green" : "red";
-            consoleOutput.appendChild(newLine);
-            consoleOutput.scrollTop = consoleOutput.scrollHeight; // Scroll to the bottom
+            // Ajoute la classe active au lien correspondant à la page courante
+            if (currentPath === '/') {
+                document.getElementById('nav-home').classList.add('active');
+            } else if (currentPath.startsWith('/problems')) {
+                document.getElementById('nav-problems').classList.add('active');
+            } else if (currentPath === '/CHANGELOG') {
+                document.getElementById('nav-changelog').classList.add('active');
+            } else if (currentPath === '/LICENSE') {
+                document.getElementById('nav-license').classList.add('active');
+            } else if (currentPath === '/solve/{{ title }}') {
+                document.getElementById('nav-problems').classList.add('active');
+            }
         }
 
-        // Event listener for the run button
-        document.getElementById("test-button").addEventListener("click", async () => {
-            const code = editor.getValue(); // Get the code from the editor
+        // Exécute la fonction au chargement de la page
+        document.addEventListener('DOMContentLoaded', setActiveNavLink);
 
+        // Initialisation de Markdown-it
+        const md = window.markdownit({
+            html: true,
+            linkify: true,
+            typographer: true,
+            highlight: function (str, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                    try {
+                        return hljs.highlight(str, { language: lang }).value;
+                    } catch (__) {}
+                }
+                return ''; // Utilisation du surlignage par défaut
+            }
+        });
+
+        // Rendu de la description du problème
+        const problemDescription = `{{ description | safe }}`;
+        document.getElementById('problem-description').innerHTML = 
+            md.render(problemDescription);
+
+        // Initialisation de highlight.js
+        document.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightBlock(block);
+        });
+
+        // Initialisation de CodeMirror
+        const editor = CodeMirror(document.getElementById('code-editor'), {
+            value: `{{ code | safe }}`,
+            mode: 'python',
+            theme: 'dracula',
+            lineNumbers: true,
+            lineWrapping: true,
+            indentUnit: 4,
+            tabSize: 4,
+            autofocus: true,
+            matchBrackets: true,
+            autoCloseBrackets: true,
+            foldGutter: true,
+            gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
+            extraKeys: {
+                'Ctrl-Space': 'autocomplete',
+                'Ctrl-Q': function(cm) {
+                    cm.foldCode(cm.getCursor());
+                },
+                'Ctrl-F': 'findPersistent',
+                'Ctrl-/': 'toggleComment'
+            },
+            hintOptions: {
+                completeSingle: false
+            }
+        });
+
+        // Fonction pour ajouter du texte à la console
+        function appendToConsole(message, isError = false) {
+            const consoleOutput = document.getElementById('console-output');
+            const entry = document.createElement('div');
+            entry.className = `console-entry ${isError ? 'error' : 'success'}`;
+            entry.textContent = message;
+            consoleOutput.appendChild(entry);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        // Clear console
+        document.getElementById('clear-console').addEventListener('click', () => {
+            document.getElementById('console-output').innerHTML = '';
+        });
+
+        // Run Tests
+        document.getElementById('run-tests').addEventListener('click', async () => {
+            const code = editor.getValue();
             try {
-                // POST request to the server
                 const response = await fetch(`/solve/{{ title }}/`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ code: code })
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code })
                 });
 
-                if (!response.ok) {
-                    throw new Error("Failed to communicate with the server");
-                    console.log("Failed to communicate with the server", response.text(), "code", { code });
-                }
-
-                // Get the JSON response
                 const data = await response.json();
+                
+                // Clear previous output
+                document.getElementById('console-output').innerHTML = '';
 
-                // Clear the console output
-                document.getElementById("console-output").innerHTML = "<p>Console output:</p>";
-
-                // If "tests" is not in the response, display the error message
-                if (data.tests) {
-                    for (const message of data.tests) {
-                        appendToConsole(message);
-                    }
-                }
-                else {
-                    appendToConsole(data.error);
+                if (data.error) {
+                    appendToConsole(data.error, true);
+                } else if (data.tests) {
+                    data.tests.forEach(test => {
+                        appendToConsole(test, !test.includes('Passed'));
+                    });
                 }
             } catch (error) {
-                // Display the error message in the console
-                appendToConsole(`Error: ${error.message}`, false);
+                appendToConsole(`Error: ${error.message}`, true);
+            }
+        });
+
+        // Auto-completion on typing
+        editor.on('inputRead', function(cm, change) {
+            if (change.text[0] === '.' || change.text[0] === ' ' || 
+                /[a-zA-Z]/.test(change.text[0])) {
+                editor.showHint();
             }
         });
     </script>
+
     <style>
-        /* Main container */
-        .container {
-            display: flex;
-            flex-direction: row;
-            gap: 20px; /* Space between the columns */
-            margin: 20px;
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --background-color: #1a1a1a;
+            --text-color: #ffffff;
+            --border-color: #333333;
+            --success-color: #22c55e;
+            --error-color: #ef4444;
         }
 
-        .left-column {
-            flex: 1; /* Left column takes less space */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .right-column {
-            flex: 2; /* Right column takes more space */
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.5;
+        }
+
+        .main-container {
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            gap: 20px; /* Space between the elements */
         }
 
-        #code-editor {
-          height: 500px; /* Height of the code editor */
-          border: 1px solid #444; /* Border around the code editor */
-          margin: 20px 0;
+        /* Header & Navigation */
+        header {
+            background-color: #1e293b;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        /* Test button */
-        .test-button {
-            background-color: green;
-            color: white;
-            padding: 10px 20px;
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            font-weight: bold;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #60a5fa;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .github-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .github-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Content Container */
+        .content-container {
+            display: flex;
+            flex: 1;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Style du titre du problème */
+        .problem-panel h1 {
+            background: linear-gradient(90deg, #2563eb, #60a5fa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .problem-panel h1::before {
+            content: '🎯';
+            background: none;
+            -webkit-background-clip: unset;
+            background-clip: unset;
+            color: initial;
+        }
+
+        /* Ligne de séparation stylisée */
+        .problem-panel hr {
             border: none;
-            border-radius: 5px;
+            height: 3px;
+            background: linear-gradient(90deg, #2563eb 0%, #60a5fa 50%, transparent 100%);
+            margin-bottom: 2rem;
+            border-radius: 2px;
+            opacity: 0.7;
+        }
+
+        /* Problem Panel */
+        .problem-panel {
+            flex: 2;
+            min-width: 400px;
+            max-width: 800px;
+            overflow-y: auto;
+            padding: 1rem;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Editor Panel */
+        .editor-panel {
+            flex: 3;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        /* Code Editor */
+        #code-editor {
+            flex: 1;
+            border-radius: 8px;
+            min-height: 300px;
+            height: 400px;
+            max-height: 600px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .CodeMirror {
+            flex: 1;
+            height: 100%;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+        }
+
+        /* Console */
+        .console-container {
+            min-height: 100px;
+            max-height: 500px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .console-header {
+            padding: 0.5rem 1rem;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #console-output {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+        }
+
+        .console-entry {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+
+        .console-entry.success {
+            color: var(--success-color);
+            background-color: rgba(34, 197, 94, 0.1);
+        }
+
+        .console-entry.error {
+            color: var(--error-color);
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        /* Buttons */
+        .primary-button, .secondary-button {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .primary-button {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .primary-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .secondary-button {
+            background-color: transparent;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .secondary-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Select Input */
+        select {
+            padding: 0.5rem;
+            border-radius: 4px;
+            background-color: rgba(0, 0, 0, 0.2);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
             cursor: pointer;
         }
 
-        /* Console output */
-        .console-output {
-            background-color: black;
-            color: white;
-            padding: 20px;
-            border-radius: 5px;
-            font-family: monospace;
-            height: 200px;
-            overflow-y: auto;
+        select:focus {
+            outline: none;
+            border-color: var(--primary-color);
         }
 
-        pre {
-            background: #f4f4f4;
-            padding: 10px;
-            border-radius: 5px;
-            overflow: auto;
+        /* Markdown Content Styling */
+        #problem-description {
+            background-color: #1e293b;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            color: var(--text-color);
         }
 
-        code {
-            background: #f4f4f4;
-            padding: 2px 4px;
-            border-radius: 3px;
+        #problem-description h1,
+        #problem-description h2,
+        #problem-description h3 {
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color:  var(--primary-color);
         }
 
-        blockquote {
-            border-left: 5px solid #ccc;
-            margin: 1em 0;
-            padding: 0.5em 10px;
-            color: #666;
-            font-style: italic;
+        #problem-description p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
         }
-      
-        .CodeMirror {
-          font-size: 16px; /* Font size */
-          height: 100%;    /* Height of the editor */
+
+        #problem-description code {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9em;
         }
-      </style>
+
+        #problem-description p code,
+        #problem-description li code,
+        #problem-description h1 code,
+        #problem-description h2 code,
+        #problem-description h3 code {
+            background-color: rgba(0, 0, 0, 0.2);
+            color: #ff79c6;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9em;
+            border: 1px solid rgba(255, 121, 198, 0.3);
+        }
+
+        #problem-description pre {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        #problem-description pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        #problem-description ul,
+        #problem-description ol {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        #problem-description li {
+            margin-bottom: 0.5rem;
+        }
+
+        #problem-description a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        #problem-description a:hover {
+            text-decoration: underline;
+        }
+
+        #problem-description blockquote {
+            border-left: 4px solid var(--primary-color);
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .content-container {
+                flex-direction: column;
+            }
+
+            .problem-panel {
+                max-width: 100%;
+            }
+
+            .CodeMirror {
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .content-container {
+                padding: 1rem;
+            }
+
+            .toolbar {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+    </style>
 </body>
 </html>

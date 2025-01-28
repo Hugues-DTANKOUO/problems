@@ -1,5 +1,11 @@
 # 📜 CHANGELOG
 
+## Next Version
+
+### 🛠 Improvements:
+
+- Improving the overall appearance of web pages
+
 ## • [v0.1.0] (13/01/2025)
 ### 🚀 New Features:
 
