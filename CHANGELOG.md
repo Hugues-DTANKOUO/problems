@@ -7,6 +7,9 @@
 - Improving the overall appearance of web pages
 - Addition of a preview and favicon to improve link display
 - Reorganization of templates with a common basic structure
+- Adding a configuration file
+- Update README
+- FASTAPI /docs and /redoc routes disabled
 
 
 ## • [v0.1.0] (13/01/2025)

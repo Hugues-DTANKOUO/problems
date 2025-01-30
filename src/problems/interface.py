@@ -7,14 +7,14 @@ from typing import Annotated, Any, Callable
 
 from fastapi import Body, FastAPI
 from fastapi.requests import Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 
 CURRENT_DIR = Path(__file__).parent
 
-app = FastAPI()
+app = FastAPI(docs_url=None, redoc_url=None)
 
 
 app.mount("/static", StaticFiles(directory=CURRENT_DIR / "static"), name="static")
@@ -56,9 +56,42 @@ async def home(request: Request) -> Any:
     readme_path = CURRENT_DIR.parents[1] / "README.md"
     with open(readme_path) as file:
         readme = file.read().replace("`", r"\`").replace("/src/problems", "")
-        readme = readme.replace("CHANGELOG.md)", "CHANGELOG)")
+        readme = re.sub(r"\((\w+)\.md\)", r"(\1)", readme)
         readme = re.sub(r"\(/(\w+)\.py\)", r"(/solve/\1)", readme)
     return templates.TemplateResponse("index.html", {"request": request, "content": readme})
+
+
+@app.get("/docs", include_in_schema=False)
+async def get_docs():
+    """
+    Redirect to the home page
+
+    :param request: The request object
+    :return: The home page
+    """
+    return RedirectResponse("/")
+
+
+@app.get("/README", response_class=HTMLResponse)
+async def get_readme() -> Any:
+    """
+    Redirect to the home page
+
+    :param request: The request object
+    :return: The home page
+    """
+    return RedirectResponse("/")
+
+
+@app.get("/redoc", include_in_schema=False)
+async def get_redoc():
+    """
+    Redirect to the home page
+
+    :param request: The request object
+    :return: The home page
+    """
+    return RedirectResponse("/")
 
 
 @app.get("/problems", response_class=HTMLResponse)
@@ -102,6 +135,22 @@ async def changelog(request: Request) -> Any:
     with open(changelog_path) as file:
         changelog = file.read().replace("`", r"\`")
     return templates.TemplateResponse("index.html", {"request": request, "content": changelog})
+
+
+@app.get("/CONTRIBUTION", response_class=HTMLResponse)
+async def contribution(request: Request) -> Any:
+    """
+    Get the changelog page
+
+    :param request: The request object
+    :return: The changelog page
+    """
+    contribution_path = CURRENT_DIR.parents[1] / "CONTRIBUTION.md"
+    with open(contribution_path) as file:
+        contribution = file.read().replace("`", r"\`")
+        contribution = contribution.replace("(README.md)", "(/)")
+        contribution = re.sub(r"\((\w+)\.md\)", r"(\1)", contribution)
+    return templates.TemplateResponse("index.html", {"request": request, "content": contribution})
 
 
 @app.get("/solve/{problem_name}", response_class=HTMLResponse)
