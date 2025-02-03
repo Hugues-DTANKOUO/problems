@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block content %}
-    <!-- Contenu Principal -->
+    <!-- Main Content -->
     <main>
         <div id="rendered-markdown"></div>
     </main>
@@ -19,17 +19,17 @@
 
 {% block scripts %}
     <script>
-        // Fonction pour gérer le lien actif dans la navigation
+        // Manage active navigation link
         function setActiveNavLink() {
-            // Récupère le chemin actuel
+            // Get the current path
             const currentPath = window.location.pathname;
             
-            // Retire la classe active de tous les liens
+            // Remove the active class from all links
             document.querySelectorAll('.nav-links a').forEach(link => {
                 link.classList.remove('active');
             });
 
-            // Ajoute la classe active au lien correspondant à la page courante
+            // Add the active class to the current link
             if (currentPath === '/') {
                 document.getElementById('nav-home').classList.add('active');
             } else if (currentPath.startsWith('/problems')) {
@@ -41,10 +41,10 @@
             }
         }
 
-        // Exécute la fonction au chargement de la page
+        // Call the function when the DOM is loaded
         document.addEventListener('DOMContentLoaded', setActiveNavLink);
         
-        // Initialisation de markdown-it avec des options
+        // Markdown-it configuration
         const md = window.markdownit({
             html: true,
             linkify: true,
@@ -55,15 +55,15 @@
                         return hljs.highlight(str, { language: lang }).value;
                     } catch (__) {}
                 }
-                return ''; // Utilisation du surlignage par défaut
+                return ''; // use external default escaping
             }
         });
 
-        // Rendu du markdown
+        // Render the markdown content
         const content = `{{ content | safe }}`;
         document.getElementById('rendered-markdown').innerHTML = md.render(content);
 
-        // Initialisation de highlight.js
+        // Highlight code blocks
         document.querySelectorAll('pre code').forEach((block) => {
             hljs.highlightBlock(block);
         });
@@ -72,7 +72,7 @@
 
 {% block styles %}
     <style>
-        /* Variables et Reset */
+        /* Custom Theme */
         :root {
             --primary-color: #3b82f6;
             --text-color: #e2e8f0;
@@ -375,7 +375,7 @@
             }
         }
 
-        /* Scrollbar personnalisée */
+        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;

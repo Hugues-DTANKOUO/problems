@@ -38,6 +38,5 @@ def anagram(word_1: str, word_2: str) -> bool:
     :return: True if the words are anagrams, False otherwise
     """
     # Write your code here
-    # Note: Do not use the sorted() function or implement your own sorting algorithm
 
     return ...  # type: ignore[return-value] # Replace this line with your code

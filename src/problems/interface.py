@@ -13,6 +13,7 @@ from fastapi.templating import Jinja2Templates
 
 
 CURRENT_DIR = Path(__file__).parent
+PROBLEMS_LIST = ["anagram", "palindrome", "knapsack", "nqueens"]
 
 app = FastAPI(docs_url=None, redoc_url=None)
 
@@ -133,17 +134,18 @@ async def changelog(request: Request) -> Any:
     """
     changelog_path = CURRENT_DIR.parents[1] / "CHANGELOG.md"
     with open(changelog_path) as file:
-        changelog = file.read().replace("`", r"\`")
+        changelog = file.read().replace("`", r"\`").replace("/src/problems", "")
+        changelog = re.sub(r"\(/(\w+)\.py\)", r"(/solve/\1)", changelog)
     return templates.TemplateResponse("index.html", {"request": request, "content": changelog})
 
 
 @app.get("/CONTRIBUTION", response_class=HTMLResponse)
 async def contribution(request: Request) -> Any:
     """
-    Get the changelog page
+    Get the contribution page
 
     :param request: The request object
-    :return: The changelog page
+    :return: The contribution page
     """
     contribution_path = CURRENT_DIR.parents[1] / "CONTRIBUTION.md"
     with open(contribution_path) as file:
@@ -163,6 +165,9 @@ async def get_problem(request: Request, problem_name: str) -> Any:
     :return: The problem page with the code editor
     """
     if not (CURRENT_DIR / f"{problem_name}.py").exists():
+        return HTMLResponse(content="404 Not Found", status_code=404)
+
+    if problem_name not in PROBLEMS_LIST:
         return HTMLResponse(content="404 Not Found", status_code=404)
 
     problem_module = importlib.import_module(f"problems.{problem_name}")
@@ -193,6 +198,9 @@ async def solve(problem_name: str, data: Annotated[dict[str, str], Body(embed=Fa
     :param data: The data from the form containing the code
     :return: The results of the tests
     """
+    if problem_name not in PROBLEMS_LIST:
+        return {"error": "Problem not found"}
+
     # Extract the code from the data
     code = data["code"]
 
@@ -227,14 +235,14 @@ async def solve(problem_name: str, data: Annotated[dict[str, str], Body(embed=Fa
 
     # Load the test module for the problem and get the test functions
     test_module = importlib.import_module(f"problems.inside_test.{problem_name}_test")
-    test_functions: list[Callable[[Callable], None]] = [
+    test_functions: list[Any] = [
         getattr(test_module, function_name) for function_name in dir(test_module) if function_name.endswith("_test")
     ]
 
     # Run the tests for the user's function and store the results
     for test_index, test_function in enumerate(test_functions):
         try:
-            test_function(user_function)
+            await test_function(user_function)
             tests_result.append(f"Test {test_index + 1}: Passed")
         except AssertionError as error:
             tests_result.append(f"Test {test_index + 1}: Failed - {str(error)}")

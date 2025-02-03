@@ -79,15 +79,23 @@ Visit [http://127.0.0.1:8000](http://127.0.0.1:8000) in your browser.
 
 ## 📂 **Available Problems**
 
-Currently, two problems are implemented:
+Currently, four problems are implemented:
 
 1. **Anagram Checker** (Easy)
    - String comparison problem
    - [View Implementation](/src/problems/anagram.py)
 
-2. **Knapsack Problem** (Medium)
+2. **Palindrome Checker** (Easy)
+   - String pattern matching problem
+   - [View Implementation](/src/problems/palindrome.py)
+
+3. **Knapsack Problem** (Medium)
    - Classic optimization problem
    - [View Implementation](/src/problems/knapsack.py)
+
+4. **N Queens Puzzle** (Hard)
+   - Chess board placement problem
+   - [View Implementation](/src/problems/nqueens.py)
 
 ---
 

@@ -14,10 +14,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/dialog/dialog.min.css">
     
-    <!-- Markdown-it pour le rendu de la documentation -->
+    <!-- Markdown-it for rendering Markdown content -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/13.0.1/markdown-it.min.js"></script>
 
-    <!-- Highlight.js pour la coloration syntaxique -->
+    <!-- Highlight.js for syntax highlighting -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
@@ -77,17 +77,17 @@
 
 {% block scripts %}
     <script>
-        // Fonction pour gérer le lien actif dans la navigation
+        // Function to set the active navigation link
         function setActiveNavLink() {
-            // Récupère le chemin actuel
+            // Get the current path
             const currentPath = window.location.pathname;
             
-            // Retire la classe active de tous les liens
+            // Remove the active class from all links
             document.querySelectorAll('.nav-links a').forEach(link => {
                 link.classList.remove('active');
             });
 
-            // Ajoute la classe active au lien correspondant à la page courante
+            // Set the active class based on the current path
             if (currentPath === '/') {
                 document.getElementById('nav-home').classList.add('active');
             } else if (currentPath.startsWith('/problems')) {
@@ -101,10 +101,10 @@
             }
         }
 
-        // Exécute la fonction au chargement de la page
+        // Set the active navigation link on page load
         document.addEventListener('DOMContentLoaded', setActiveNavLink);
 
-        // Initialisation de Markdown-it
+        // Markdown-it instance
         const md = window.markdownit({
             html: true,
             linkify: true,
@@ -115,21 +115,21 @@
                         return hljs.highlight(str, { language: lang }).value;
                     } catch (__) {}
                 }
-                return ''; // Utilisation du surlignage par défaut
+                return ''; // use external default escaping
             }
         });
 
-        // Rendu de la description du problème
+        // Render the problem description
         const problemDescription = `{{ description | safe }}`;
         document.getElementById('problem-description').innerHTML = 
             md.render(problemDescription);
 
-        // Initialisation de highlight.js
+        // Highlight code blocks
         document.querySelectorAll('pre code').forEach((block) => {
             hljs.highlightBlock(block);
         });
 
-        // Initialisation de CodeMirror
+        // CodeMirror instance
         const editor = CodeMirror(document.getElementById('code-editor'), {
             value: `{{ code | safe }}`,
             mode: 'python',
@@ -156,7 +156,7 @@
             }
         });
 
-        // Fonction pour ajouter du texte à la console
+        // Function to append messages to the console
         function appendToConsole(message, isError = false) {
             const consoleOutput = document.getElementById('console-output');
             const entry = document.createElement('div');
@@ -315,7 +315,7 @@
             width: 100%;
         }
 
-        /* Style du titre du problème */
+        /* Problem Panel */
         .problem-panel h1 {
             background: linear-gradient(90deg, #2563eb, #60a5fa);
             -webkit-background-clip: text;
@@ -338,7 +338,7 @@
             color: initial;
         }
 
-        /* Ligne de séparation stylisée */
+        /* Line Separator */
         .problem-panel hr {
             border: none;
             height: 3px;

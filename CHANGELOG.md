@@ -2,6 +2,13 @@
 
 ## Next Version
 
+## • [v0.1.1] (03/02/2025)
+### 🚀 New Features:
+
+- Added [Palindrome](/src/problems/palindrome.py) problem (Easy)
+- Added [N Queens](/src/problems/nqueens.py) problem (Hard)
+
+
 ### 🛠 Improvements:
 
 - Improving the overall appearance of web pages
@@ -10,6 +17,8 @@
 - Adding a configuration file
 - Update README
 - FASTAPI /docs and /redoc routes disabled
+- Add an asynchronous timeout for tests
+- Ensure that application tests validate user tests
 
 
 ## • [v0.1.0] (13/01/2025)

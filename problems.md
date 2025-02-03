@@ -2,7 +2,7 @@
 
 Welcome to our collection of programming challenges! Here you'll find a variety of problems to help you improve your coding skills. Each problem is carefully designed to test different aspects of programming and algorithmic thinking.
 
-## 🔍 Problem Categories
+## 🔍 Problem Catalogues
 
 ### <u><a> [1. 🟢 **Anagram Checker** - *Easy*](/src/problems/anagram.py) </a></u>
 <br>
@@ -23,7 +23,28 @@ True
 False
 ```
 
-### <u><a> [2. 🟡 **Knapsack Problem** - *Medium*](/src/problems/knapsack.py) </a></u>
+### <u><a> [2. 🟢 **Palindrome Checker** - *Easy*](/src/problems/palindrome.py) </a></u>
+<br>
+
+Practice string manipulation by determining if a text reads the same forwards and backwards.
+
+**Key Concepts:**
+- String manipulation
+- Pattern matching
+- Input validation
+- Handling special cases
+
+**Example:**
+```python
+> palindrome("kayak")
+True
+> palindrome("A man, a plan, a canal: Panama!")
+True
+> palindrome("hello")
+False
+```
+
+### <u><a> [3. 🟡 **Knapsack Problem** - *Medium*](/src/problems/knapsack.py) </a></u>
 <br>
 
 A classic optimization problem that tests your understanding of dynamic programming.
@@ -38,6 +59,25 @@ A classic optimization problem that tests your understanding of dynamic programm
 ```python
 > knapsack(weight_capacity=50, weights=[10,20,30], values=[60,100,120])
 220
+```
+
+### <u><a> [4. 🔴 **N Queens Puzzle** - *Hard*](/src/problems/nqueens.py) </a></u>
+<br>
+
+A challenging chess puzzle that tests your skills in backtracking and algorithmic thinking.
+
+**Key Concepts:**
+- Backtracking algorithms
+- State space search
+- Constraint satisfaction
+- Board game logic
+
+**Example:**
+```python
+> nqueens(n=4)
+[[1, 3, 0, 2]]  # One possible solution for 4x4 board
+> nqueens(n=8)
+[[0, 4, 7, 5, 2, 6, 1, 3]]  # One possible solution for 8x8 board
 ```
 
 ## 💡 Tips for Problem Solving
