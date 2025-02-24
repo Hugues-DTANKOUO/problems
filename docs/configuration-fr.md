@@ -165,7 +165,7 @@ Si vous avez Windows 32 bits :
 
 ## 7. Premier projet : Interface graphique avec Tkinter
 
-1. Créez un fichier `votre_nom_devoir_1.py` :
+### Créez un fichier `votre_nom_devoir_1.py` :
 
 ```python
 import tkinter as tk
@@ -175,7 +175,16 @@ from tkinter import messagebox
 NAME = "Votre Nom"  # À modifier
 
 class SimpleApp:
-    def __init__(self, root):
+    """
+    Classe SimpleApp pour créer une application simple avec Tkinter
+    """
+    def __init__(self, root: tk.Tk) -> None:
+        """
+        Constructeur de la classe SimpleApp
+
+        :param root: Fenêtre principale de l'application
+        :type root: BaseWidget (tk.Tk)
+        """
         self.root = root
         self.root.title("Hello World")
         self.root.geometry("300x200")
@@ -188,7 +197,10 @@ class SimpleApp:
         self.quit_button = tk.Button(root, text="Quitter", command=self.confirm_quit)
         self.quit_button.pack()
     
-    def confirm_quit(self):
+    def confirm_quit(self) -> None:
+        """
+        Méthode pour confirmer la fermeture de l'application
+        """
         if messagebox.askokcancel("Quitter", "Voulez-vous vraiment quitter ?"):
             self.root.destroy()
 
@@ -198,7 +210,51 @@ if __name__ == "__main__":
     root.mainloop()
 ```
 
-2. **Pour rendre votre devoir** :
+## 8. Exécution du programme
+
+Il existe plusieurs façons d'exécuter votre programme Python. Voici les méthodes principales :
+
+### Depuis VS Code
+
+1. **Utiliser le bouton Play** :
+   - Ouvrez votre fichier `.py` dans VS Code
+   - Cliquez sur le triangle vert (▶️) en haut à droite de l'éditeur
+   - Ou utilisez le raccourci Ctrl + F5 (Windows/Linux) ou Cmd + F5 (Mac)
+
+2. **Depuis le terminal intégré** :
+   - Ouvrez le terminal dans VS Code (Ctrl + ` ou View → Terminal)
+   - Naviguez jusqu'au dossier contenant votre fichier si nécessaire
+   - Exécutez :
+     ```bash
+     python votre_nom_devoir_1.py
+     ```
+
+### Depuis le terminal/cmd
+
+1. **Windows** :
+   - Ouvrez cmd (Windows + R, tapez "cmd", Entrée)
+   - Naviguez vers votre dossier :
+     ```bash
+     cd chemin/vers/votre/dossier
+     python votre_nom_devoir_1.py
+     ```
+
+2. **Linux/Mac** :
+   - Ouvrez le terminal
+   - Naviguez vers votre dossier :
+     ```bash
+     cd chemin/vers/votre/dossier
+     python3 votre_nom_devoir_1.py
+     ```
+
+### En cas de problèmes
+
+- Si python n'est pas reconnu : utilisez `python3` au lieu de `python`
+- Si le programme se ferme immédiatement : lancez-le depuis le terminal pour voir les erreurs
+- Si vous avez une erreur de module : vérifiez que vous êtes dans le bon dossier
+- Si l'interface ne s'affiche pas : vérifiez qu'il n'y a pas d'erreur de syntaxe dans votre code
+
+## 9. Pour rendre votre devoir
    - Le fichier Python (`.py`)
    - Une capture d'écran de VS Code avec votre code
    - Une capture d'écran de votre application en fonctionnement
