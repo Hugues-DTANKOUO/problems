@@ -3,12 +3,9 @@
 ## Next Version
 
 
-## [0.1.1] - 2024-03-02
-
-### Fixed 
+### ![🐞](https://fonts.gstatic.com/s/e/notoemoji/16.0/1f41e/32.png) Bug Fixes:
 
 - Added explicit UTF-8 encoding for file reading in `interface.py`
-  - Fixed `UnicodeDecodeError` when reading files containing special characters 
 
 ## • [v0.1.1] (03/02/2025)
 
