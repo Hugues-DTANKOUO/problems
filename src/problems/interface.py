@@ -55,7 +55,7 @@ async def home(request: Request) -> Any:
     :return: The home page
     """
     readme_path = CURRENT_DIR.parents[1] / "README.md"
-    with open(readme_path) as file:
+    with open(readme_path, "r", encoding="utf-8") as file:
         readme = file.read().replace("`", r"\`").replace("/src/problems", "")
         readme = re.sub(r"\((\w+)\.md\)", r"(\1)", readme)
         readme = re.sub(r"\(/(\w+)\.py\)", r"(/solve/\1)", readme)
