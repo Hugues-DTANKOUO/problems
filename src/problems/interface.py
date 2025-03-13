@@ -13,7 +13,7 @@ from fastapi.templating import Jinja2Templates
 
 
 CURRENT_DIR = Path(__file__).parent
-PROBLEMS_LIST = ["anagram", "palindrome", "knapsack", "nqueens"]
+PROBLEMS_LIST = ["anagram", "palindrome", "knapsack", "nqueens", "fibonacci"]
 
 app = FastAPI(docs_url=None, redoc_url=None)
 
@@ -104,7 +104,7 @@ async def problems(request: Request) -> Any:
     :return: The list of problems
     """
     problems_path = CURRENT_DIR.parents[1] / "problems.md"
-    with open(problems_path) as file:
+    with open(problems_path, "r", encoding="utf-8") as file:
         problems = file.read().replace("`", r"\`").replace("/src/problems", "")
         problems = re.sub(r"\(/(\w+)\.py\)", r"(/solve/\1)", problems)
     return templates.TemplateResponse("index.html", {"request": request, "content": problems})
@@ -119,7 +119,7 @@ async def get_license(request: Request) -> Any:
     :return: The license page
     """
     license_path = CURRENT_DIR.parents[1] / "LICENSE"
-    with open(license_path) as file:
+    with open(license_path, "r", encoding="utf-8") as file:
         license_content = file.read().replace("`", r"\`")
     return templates.TemplateResponse("index.html", {"request": request, "content": license_content})
 
@@ -133,7 +133,7 @@ async def changelog(request: Request) -> Any:
     :return: The changelog page
     """
     changelog_path = CURRENT_DIR.parents[1] / "CHANGELOG.md"
-    with open(changelog_path) as file:
+    with open(changelog_path, "r", encoding="utf-8") as file:
         changelog = file.read().replace("`", r"\`").replace("/src/problems", "")
         changelog = re.sub(r"\(/(\w+)\.py\)", r"(/solve/\1)", changelog)
     return templates.TemplateResponse("index.html", {"request": request, "content": changelog})
@@ -148,7 +148,7 @@ async def contribution(request: Request) -> Any:
     :return: The contribution page
     """
     contribution_path = CURRENT_DIR.parents[1] / "CONTRIBUTION.md"
-    with open(contribution_path) as file:
+    with open(contribution_path, "r", encoding="utf-8") as file:
         contribution = file.read().replace("`", r"\`")
         contribution = contribution.replace("(README.md)", "(/)")
         contribution = re.sub(r"\((\w+)\.md\)", r"(\1)", contribution)
@@ -175,7 +175,7 @@ async def get_problem(request: Request, problem_name: str) -> Any:
     documentation = problem_module.__doc__ or ""
 
     # Get the code from the file
-    with open(CURRENT_DIR / f"{problem_name}.py") as file:
+    with open(CURRENT_DIR / f"{problem_name}.py", "r", encoding="utf-8") as file:
         code = file.read()
 
     # Remove the documentation from the code and escape the backticks
