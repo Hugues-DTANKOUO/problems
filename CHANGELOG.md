@@ -3,7 +3,11 @@
 ## Next Version
 
 
-### ![🐞](https://fonts.gstatic.com/s/e/notoemoji/16.0/1f41e/32.png) Bug Fixes:
+### 🚀 New Features:
+
+- Added Fibonacci (Easy)
+
+### Bug Fixes:
 
 - Added explicit UTF-8 encoding for file reading in `interface.py`
 
