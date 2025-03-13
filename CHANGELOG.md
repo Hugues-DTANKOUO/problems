@@ -2,7 +2,6 @@
 
 ## Next Version
 
-
 ### 🚀 New Features:
 
 - Added Fibonacci (Easy)
