@@ -7,7 +7,7 @@
 
 - Added Fibonacci (Easy)
 
-### Bug Fixes:
+### 🐞 Bug Fixes:
 
 - Added explicit UTF-8 encoding for file reading in `interface.py`
 
