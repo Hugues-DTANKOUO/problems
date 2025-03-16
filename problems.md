@@ -47,14 +47,16 @@ False
 ### <u><a> [3. 🟢 **Fibonacci Sequence** - *Easy*](/src/problems/fibonacci.py) </a></u>
 <br>
 
-Practice recursive thinking and optimization techniques with this classic mathematical sequence.
+Practice optimization techniques with this classic mathematical sequence using an iterative approach.
 
 **Key Concepts:**
 
-- Recursion
-- Memoization
-- Dynamic programming
-- Performance optimization
+- Iterative implementation
+- Space optimization
+- Time complexity analysis
+- Performance constraints
+- Input validation
+
 
 **Example:**
 
@@ -149,9 +151,11 @@ Have an interesting problem to add? We welcome contributions! Please ensure your
 ## 🎓 Learning Path
 
 We recommend solving problems in this order:
-1. Start with String problems (Anagram)
-2. Move to Dynamic Programming (Knapsack)
-3. Progress to more complex problems as they are added
+1. Start with String problems (Anagram, Palindrome)
+2. Progress to sequence problems (Fibonacci)
+3. Move to Dynamic Programming (Knapsack)
+4. Tackle complex problems (N Queens)
+5. Progress to more complex problems as they are added
 
 ## 🔜 Coming Soon
 

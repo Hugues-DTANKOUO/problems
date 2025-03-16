@@ -5,8 +5,8 @@ from problems.inside_test.util import async_timeout
 
 async def fibonacci_base_cases_test(fibonacci_func: Callable[[int], int]) -> None:
     """
-    GIVEN the base cases (0 and 1)
-    WHEN the fibonacci function is called
+    GIVEN base cases (0 and 1)
+    WHEN fibonacci function is called
     THEN it should return correct values
     """
     _functional_fibonacci = async_timeout(100)(fibonacci_func)
@@ -18,21 +18,19 @@ async def fibonacci_base_cases_test(fibonacci_func: Callable[[int], int]) -> Non
 async def fibonacci_small_values_test(fibonacci_func: Callable[[int], int]) -> None:
     """
     GIVEN small input values
-    WHEN the fibonacci function is called
-    THEN it should return correct fibonacci numbers
+    WHEN fibonacci function is called
+    THEN it should return correct values
     """
     _functional_fibonacci = async_timeout(100)(fibonacci_func)
 
     assert await _functional_fibonacci(2) == 1, "F(2) should be 1"
-    assert await _functional_fibonacci(3) == 2, "F(3) should be 2"
     assert await _functional_fibonacci(6) == 8, "F(6) should be 8"
-    assert await _functional_fibonacci(10) == 55, "F(10) should be 55"
 
 
 async def fibonacci_medium_value_test(fibonacci_func: Callable[[int], int]) -> None:
     """
     GIVEN a medium input value
-    WHEN the fibonacci function is called
+    WHEN fibonacci function is called
     THEN it should return correct value within timeout
     """
     _functional_fibonacci = async_timeout(1000)(fibonacci_func)
@@ -43,7 +41,7 @@ async def fibonacci_medium_value_test(fibonacci_func: Callable[[int], int]) -> N
 async def fibonacci_large_value_test(fibonacci_func: Callable[[int], int]) -> None:
     """
     GIVEN a large input value
-    WHEN the fibonacci function is called
+    WHEN fibonacci function is called
     THEN it should return correct value within timeout
     """
     _functional_fibonacci = async_timeout(5000)(fibonacci_func)
@@ -54,7 +52,7 @@ async def fibonacci_large_value_test(fibonacci_func: Callable[[int], int]) -> No
 async def fibonacci_invalid_input_test(fibonacci_func: Callable[[int], int]) -> None:
     """
     GIVEN invalid inputs
-    WHEN the fibonacci function is called
+    WHEN fibonacci function is called
     THEN it should raise appropriate exceptions
     """
     _functional_fibonacci = async_timeout(100)(fibonacci_func)

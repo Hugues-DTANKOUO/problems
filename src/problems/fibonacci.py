@@ -29,7 +29,6 @@ of the two preceding ones. The sequence starts with 0 and 1.
 ## Notes:
 - Input must be a non-negative integer
 - Time limit: 1 second for n <= 35
-- Use optimization techniques for larger values
 """
 
 # Import the necessary libraries here

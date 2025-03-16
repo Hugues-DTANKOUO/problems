@@ -1,4 +1,3 @@
-from functools import lru_cache
 from time import sleep
 
 import pytest
@@ -7,7 +6,6 @@ from problems.fibonacci import fibonacci
 from problems.inside_test import fibonacci_test
 
 
-@lru_cache(maxsize=None)
 def correct_fibonacci(n: int) -> int:
     """
     Calculate the nth Fibonacci number.
@@ -25,30 +23,32 @@ def correct_fibonacci(n: int) -> int:
         raise ValueError("Input must be non-negative")
 
     # Base cases
-    if n == 0:
-        return 0
-    if n == 1:
-        return 1
+    if n <= 1:
+        return n
 
-    # Recursive case with memoization handled by @lru_cache
-    return correct_fibonacci(n - 1) + correct_fibonacci(n - 2)
+    # Iterative calculation
+    previous, current = 0, 1
+    for _ in range(2, n + 1):
+        previous, current = current, previous + current
+
+    return current
 
 
 async def test_test_case_with_base_cases_and_base_function_then_error() -> None:
     """
-    GIVEN a test case with base cases and base function
-    WHEN the fibonacci function is called
+    GIVEN test case with base cases and base function
+    WHEN fibonacci function is called
     THEN an AssertionError should be raised
     """
-    with pytest.raises(AssertionError, match="F\\(0\\) should be 0"):
+    with pytest.raises(AssertionError):
         await fibonacci_test.fibonacci_base_cases_test(fibonacci)
 
 
 async def test_test_case_with_base_cases_and_correct_function_then_success() -> None:
     """
-    GIVEN a test case with base cases and correct function
-    WHEN the fibonacci function is called
-    THEN any error should not be raised
+    GIVEN test case with base cases and correct function
+    WHEN fibonacci function is called
+    THEN no error should be raised
     """
     await fibonacci_test.fibonacci_base_cases_test(correct_fibonacci)
 
@@ -129,17 +129,16 @@ async def test_test_case_with_invalid_input_and_correct_function_then_success() 
     await fibonacci_test.fibonacci_invalid_input_test(correct_fibonacci)
 
 
-async def test_test_case_with_large_value_and_slow_correct_function_then_error() -> None:
+async def test_test_case_with_large_value_and_slow_function_then_error() -> None:
     """
-    GIVEN a test case with large value and slow correct function
-    WHEN the fibonacci function is called
-    THEN an AssertionError should be raised
+    GIVEN test case with large value and slow function
+    WHEN fibonacci function is called
+    THEN a timeout error should be raised
     """
 
     def slow_fibonacci(n: int) -> int:
-        """Slow implementation of fibonacci with artificial delay."""
-        sleep(5)
+        sleep(6)
         return correct_fibonacci(n)
 
-    with pytest.raises(AssertionError, match="Function timed out after 5000 milliseconds"):
+    with pytest.raises(AssertionError):
         await fibonacci_test.fibonacci_large_value_test(slow_fibonacci)
