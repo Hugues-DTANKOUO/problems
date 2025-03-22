@@ -44,7 +44,34 @@ True
 False
 ```
 
-### <u><a> [3. 🟡 **Knapsack Problem** - *Medium*](/src/problems/knapsack.py) </a></u>
+### <u><a> [3. 🟢 **Fibonacci Sequence** - *Easy*](/src/problems/fibonacci.py) </a></u>
+<br>
+
+Practice optimization techniques with this classic mathematical sequence using an iterative approach.
+
+**Key Concepts:**
+
+- Iterative implementation
+- Space optimization
+- Time complexity analysis
+- Performance constraints
+- Input validation
+
+
+**Example:**
+
+```python
+> fibonacci(0)
+0
+> fibonacci(6)
+8
+> fibonacci(10)
+55
+> fibonacci(20)
+6765
+```
+
+### <u><a> [4. 🟡 **Knapsack Problem** - *Medium*](/src/problems/knapsack.py) </a></u>
 <br>
 
 A classic optimization problem that tests your understanding of dynamic programming.
@@ -61,7 +88,7 @@ A classic optimization problem that tests your understanding of dynamic programm
 220
 ```
 
-### <u><a> [4. 🔴 **N Queens Puzzle** - *Hard*](/src/problems/nqueens.py) </a></u>
+### <u><a> [5. 🔴 **N Queens Puzzle** - *Hard*](/src/problems/nqueens.py) </a></u>
 <br>
 
 A challenging chess puzzle that tests your skills in backtracking and algorithmic thinking.
@@ -124,9 +151,11 @@ Have an interesting problem to add? We welcome contributions! Please ensure your
 ## 🎓 Learning Path
 
 We recommend solving problems in this order:
-1. Start with String problems (Anagram)
-2. Move to Dynamic Programming (Knapsack)
-3. Progress to more complex problems as they are added
+1. Start with String problems (Anagram, Palindrome)
+2. Progress to sequence problems (Fibonacci)
+3. Move to Dynamic Programming (Knapsack)
+4. Tackle complex problems (N Queens)
+5. Progress to more complex problems as they are added
 
 ## 🔜 Coming Soon
 
