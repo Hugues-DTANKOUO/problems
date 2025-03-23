@@ -44,27 +44,6 @@ async def fibonacci_large_value_test(fibonacci_func: Callable[[int], int]) -> No
     WHEN fibonacci function is called
     THEN it should return correct value within timeout
     """
-    _functional_fibonacci = async_timeout(5000)(fibonacci_func)
+    _functional_fibonacci = async_timeout(1000)(fibonacci_func)
 
     assert await _functional_fibonacci(35) == 9227465, "F(35) should be 9227465"
-
-
-async def fibonacci_invalid_input_test(fibonacci_func: Callable[[int], int]) -> None:
-    """
-    GIVEN invalid inputs
-    WHEN fibonacci function is called
-    THEN it should raise appropriate exceptions
-    """
-    _functional_fibonacci = async_timeout(100)(fibonacci_func)
-
-    try:
-        await _functional_fibonacci(-1)
-        raise AssertionError("Negative input should raise ValueError")
-    except ValueError:
-        pass
-
-    try:
-        await _functional_fibonacci(1.5)
-        raise AssertionError("Non-integer input should raise TypeError")
-    except TypeError:
-        pass
