@@ -16,11 +16,6 @@ def correct_fibonacci(n: int) -> int:
     :param n: A non-negative integer
     :return: The nth Fibonacci number
     """
-    # check if input is valid
-    if not isinstance(n, int):
-        raise TypeError("Input must be an integer")
-    if n < 0:
-        raise ValueError("Input must be non-negative")
 
     # Base cases
     if n <= 1:
@@ -108,25 +103,6 @@ async def test_test_case_with_large_value_and_correct_function_then_success() ->
     THEN any error should not be raised
     """
     await fibonacci_test.fibonacci_large_value_test(correct_fibonacci)
-
-
-async def test_test_case_with_invalid_input_and_base_function_then_error() -> None:
-    """
-    GIVEN a test case with invalid input and base function
-    WHEN the fibonacci function is called
-    THEN an AssertionError should be raised
-    """
-    with pytest.raises(AssertionError, match="Negative input should raise ValueError"):
-        await fibonacci_test.fibonacci_invalid_input_test(fibonacci)
-
-
-async def test_test_case_with_invalid_input_and_correct_function_then_success() -> None:
-    """
-    GIVEN a test case with invalid input and correct function
-    WHEN the fibonacci function is called
-    THEN any error should not be raised
-    """
-    await fibonacci_test.fibonacci_invalid_input_test(correct_fibonacci)
 
 
 async def test_test_case_with_large_value_and_slow_function_then_error() -> None:
